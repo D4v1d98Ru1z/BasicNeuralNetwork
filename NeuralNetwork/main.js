@@ -6,6 +6,7 @@ input.addEventListener("change", (e)=>{
     const rgb = getRgb(e.target.value); //const from the rgb function
     const network = new brain.NeuralNetwork(); 
     console.log(rgb);
+    document.getElementById("colo-select").innerHTML = JSON.stringify(rgb);    
     network.train([
         {input: {r: 0.58, g: 0.82, b: 0.57}, output: {light: 1}},
         {input: {r: 0.41, g: 0.36, b: 0.07}, output: {dark: 1}},
@@ -18,7 +19,12 @@ input.addEventListener("change", (e)=>{
     ]);
 
     const res = brain.likely(rgb, network);
+    const percent = network.run(rgb);
+    document.getElementById("valuesPer").innerHTML = JSON.stringify(percent);
     console.log(res);
+    document.getElementById("definition").innerHTML = res;
+    box.style.background = e.target.value;
+    box.style.color = res === "dark" ? "white" : "black"; //if is dark resturn text color white otherwise black
 });
 //transform the rbg and divide into 255
 function getRgb(hex){
